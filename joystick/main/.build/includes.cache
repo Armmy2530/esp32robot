@@ -1,0 +1,82 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\Armmy2530\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\cores\\esp32"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\Armmy2530\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\2.0.9\\variants\\doitESP32devkitV1"
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Project\\esp32robot\\joystick\\main\\.build\\sketch\\main.ino.cpp",
+    "Include": "ESP32Servo.h",
+    "Includepath": "D:\\Documents\\Arduino\\libraries\\ESP32Servo-master\\src"
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Project\\esp32robot\\joystick\\main\\.build\\sketch\\main.ino.cpp",
+    "Include": "motor_esp32.h",
+    "Includepath": "D:\\Documents\\Arduino\\libraries\\Esp32_Motor_drive"
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Project\\esp32robot\\joystick\\main\\.build\\sketch\\main.ino.cpp",
+    "Include": "PS4Controller.h",
+    "Includepath": "D:\\Documents\\Arduino\\libraries\\PS4-esp32\\src"
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Project\\esp32robot\\joystick\\main\\.build\\sketch\\main.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\ESP32Servo-master\\src\\ESP32PWM.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\ESP32Servo-master\\src\\ESP32Servo.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\ESP32Servo-master\\src\\ESP32Tone.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\ESP32Servo-master\\src\\analogWrite.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\Esp32_Motor_drive\\motor_esp32.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\PS4-esp32\\src\\PS4Controller.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\PS4-esp32\\src\\ps4.c",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\PS4-esp32\\src\\ps4_l2cap.c",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\PS4-esp32\\src\\ps4_parser.c",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "D:\\Documents\\Arduino\\libraries\\PS4-esp32\\src\\ps4_spp.c",
+    "Include": "",
+    "Includepath": null
+  }
+]
