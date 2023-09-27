@@ -1,5 +1,29 @@
-//Calibration parameter
+// Calibration parameter
 int dif_ref = 300;
+
+void getRemote()
+{
+  controller_data.L_X = PS4.LStickX();
+  controller_data.L_Y = PS4.LStickY();
+  controller_data.R_X = PS4.RStickX();
+  controller_data.R_Y = PS4.RStickY();
+  controller_data.Right = PS4.Right();
+  controller_data.Down = PS4.Down();
+  controller_data.Up = PS4.Up();
+  controller_data.Left = PS4.Left();
+  controller_data.Square = PS4.Square();
+  controller_data.Cross = PS4.Cross();
+  controller_data.Circle = PS4.Circle();
+  controller_data.Triangle = PS4.Triangle();
+  controller_data.L1 = PS4.L1();
+  controller_data.R1 = PS4.R1();
+  controller_data.Share = PS4.Share();
+  controller_data.Option = PS4.Options();
+  controller_data.L3 = PS4.L3();
+  controller_data.R3 = PS4.R3();
+  controller_data.L2 = PS4.L2Value();
+  controller_data.R2 = PS4.R2Value();
+}
 
 void readSensor()
 {
@@ -10,16 +34,20 @@ void readSensor()
   sensor_val[4] = analogRead(R2_pin);
   for (int n = 0; n <= 4; n++)
   {
-    sensor_bool[n] = W(sensor_val[n], ref_sensor[n]);
+    sensor_bool[n] = B(sensor_val[n], ref_sensor[n]);
   }
-  L2_value = sensor_bool[0];
-  L1_value = sensor_bool[1];
-  C_value  = sensor_bool[2];
-  R1_value = sensor_bool[3];
-  R2_value = sensor_bool[4];
+
+  if (debug == true)
+  {
+    for (int n = 0; n <= 4; n++)
+    {
+      Serial.print(String(sensor_bool[n]) + " ");
+    }
+    Serial.println();
+  }
 }
 
-void calibrate_sensor(int n_check)
+void calibrate_sensor(int n_check, int cal_speed)
 {
   readSensor();
   int white_val[5] = {0, 0, 0, 0, 0};
@@ -27,23 +55,26 @@ void calibrate_sensor(int n_check)
   int avg_val[5] = {0, 0, 0, 0, 0};
   int confirm_black = 0;
   Serial.println("Start Calibrat sensor ..........");
+
+  // number of loop for find avg white and black color from sensor
+  /////////////////////////////////////////////////////////////////////////////////
   for (int i = 0; i < n_check; i++)
   {
+    // Start from all sensor in white area (no black line on sensor) and save in array
+    /////////////////////////////////////////////////////////////////////////////////
     for (int n = 0; n <= 4; n++)
     {
       readSensor();
       white_val[n] = sensor_val[n];
     }
-    m(150, 150);
+    /////////////////////////////////////////////////////////////////////////////////
+
+    // Moving forward until all sensor are on black area (sensor see all black line)
+    /////////////////////////////////////////////////////////////////////////////////
+    fd(cal_speed);
     while (true)
     {
       readSensor();
-      for (int n = 0; n <= 4; n++)
-      {
-        Serial.print(sensor_val[n]);
-        Serial.print(" ");
-      }
-      Serial.println(" ");
       for (int i = 0; i <= 4; i++)
       {
         readSensor();
@@ -51,7 +82,9 @@ void calibrate_sensor(int n_check)
         {
           confirm_black++;
         }
+        Serial.print(String(sensor_val[n]) + " ");
       }
+      Serial.println();
       if (confirm_black == 5)
       {
         for (int n = 0; n <= 4; n++)
@@ -60,22 +93,18 @@ void calibrate_sensor(int n_check)
         }
         delay(50);
         m(0, 0);
-        confirm_black = 0;
         break;
       }
       else
         confirm_black = 0;
     }
+    /////////////////////////////////////////////////////////////////////////////////
+
+    // Average max and min value to get the middle value (ref value) for the sensor
+    /////////////////////////////////////////////////////////////////////////////////
     for (int n = 0; n <= 4; n++)
     {
-      if (avg_val[n] = 0)
-      {
-        avg_val[n] = (white_val[n] + black_val[n]) / 2;
-      }
-      else
-      {
-        avg_val[n] = avg_val[n] + ((white_val[n] + black_val[n]) / 2) / 2;
-      }
+      avg_val[n] = (white_val[n] + black_val[n]) / 2;
     }
     Serial.print("loop: ");
     Serial.print(i);
@@ -85,52 +114,33 @@ void calibrate_sensor(int n_check)
       Serial.print(avg_val[n]);
     }
     Serial.println();
-    while (true)
+    /////////////////////////////////////////////////////////////////////////////////
+
+    // Moving backward untill all sensor on white area (all sensor not see the black line)
+    /////////////////////////////////////////////////////////////////////////////////
+    bd(cal_speed);
+    while ((W(sensor_val[0], avg_val[0]) && W(sensor_val[1], avg_val[1]) && W(sensor_val[2], avg_val[2]) && W(sensor_val[3], avg_val[3]) && W(sensor_val[4], avg_val[4])))
     {
       readSensor();
-      // for (int n = 0; n <= 4; n++)
-      // {
-      //     Serial.print(avg_val[n]);
-      //     Serial.print(" ");
-      //     Serial.print(sensor_val[n]);
-      //     Serial.print(" ");
-      //     Serial.print(W(sensor_val[n],avg_val[n]));
-      //     Serial.print(" ");
-      // }
-      if ((W(sensor_val[0], avg_val[0]) && W(sensor_val[1], avg_val[1]) && W(sensor_val[2], avg_val[2]) && W(sensor_val[3], avg_val[3]) && W(sensor_val[4], avg_val[4])))
-      {
-        Serial.print("True ");
-        break;
-      }
-      // Serial.println();
-      m(-100, -100);
     }
     delay(500);
     m(0, 0);
+    ////////////////////////////////////////////////////////////////////////////////
     delay(1000);
   }
+  // !!!(end of for loop)!!! /////////////////////////////////////////////////////////
+
+  // Finish all loop, get all value and avg them all to get final value
+  /////////////////////////////////////////////////////////////////////////////////
+  Serial.print("Final Ref: ");
+  Serial.print(" {");
   for (int n = 0; n <= 4; n++)
   {
     ref_sensor[n] = avg_val[n];
-    Serial.print("Final Ref");
-    Serial.print(" ");
-    Serial.print(ref_sensor[n]);
+    Serial.print(String(ref_sensor[n]) + ", ");
   }
-  Serial.println();
-}
-
-void m(int l, int r)
-{
-  if (l > 255)
-  {
-    l = 255;
-  }
-  if (r > 255)
-  {
-    r = 255;
-  }
-  L_motor.m(l);
-  R_motor.m(r);
+  Serial.println(" }");
+  /////////////////////////////////////////////////////////////////////////////////
 }
 
 bool W(int n, int ref)
