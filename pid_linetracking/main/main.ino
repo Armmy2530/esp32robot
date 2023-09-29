@@ -4,8 +4,18 @@
 #include <PS4Controller.h>
 #include <Ramp.h>
 
-enum {HOME, STARTING, RUN} state = HOME;
-enum {CENTER, RIGHT, LEFT} lastline_state = CENTER;
+enum
+{
+  HOME,
+  STARTING,
+  RUN
+} state = HOME;
+enum
+{
+  CENTER,
+  RIGHT,
+  LEFT
+} lastline_state = CENTER;
 
 // Motor L
 #define m2a 12
@@ -17,7 +27,7 @@ enum {CENTER, RIGHT, LEFT} lastline_state = CENTER;
 #define pwm1 25
 
 // Motor parameters
-#define power_percentage 60.0
+#define power_percentage 100.0
 
 Motor L_motor(m1a, m1b, pwm1);
 Motor R_motor(m2a, m2b, pwm2);
@@ -48,7 +58,8 @@ public:
     return output;
   }
 
-  int update(){
+  int update()
+  {
     return (int)myRamp.update();
   }
 };
@@ -71,10 +82,10 @@ boolean sensor_bool[5] = {0, 0, 0, 0, 0};
 int sensor_val[5] = {1, 1, 1, 1, 1};
 
 // Motor&PID parameter
-int baseSpeed = 150;
-int maxSpeed = 255;
-float pid1_parameter[3] = {25, 6, 0.0000001}; // Pi 0.0000001
-float pid_forward_parameter[3] = {13.5, 1, 0.0000001}; // Pi 0.0000001
+int baseSpeed = 120;
+int maxSpeed = 180;
+float pid1_parameter[3] = {8, 20, 0};        // Pi 0.0000001
+float pid_forward_parameter[3] = {2, 0, 0}; // {8.5, 10, 0.001}
 
 bool debug = false;
 
@@ -111,24 +122,24 @@ void setup()
   pinMode(C_pin, INPUT);
   pinMode(R1_pin, INPUT);
   pinMode(R2_pin, INPUT);
-  Serial.begin(115200);
+  Serial.begin(230400);
   // PS4.begin("14:85:7f:50:7a:61");
 
   delay(1500);
 
   // trackline_Cross(pid1_parameter, baseSpeed, 1, 50, 50);
   // trackline_R(pid1_parameter, baseSpeed, 1, 50, 50);
-  // tr_sensor(60);
+  // tr_sensor(150);
   // trackline_R(pid_forward_parameter, 200, 1, 50, 50);
-  // tr_sensor(60);
+  // tr_sensor(150);
   // trackline_R(pid_forward_parameter, 200, 1, 50, 50);
-  // tr_sensor(60);
+  // tr_sensor(150);
   // trackline_Cross(pid1_parameter, baseSpeed, 1, 50, 50);
 
+  trackline_R(pid_forward_parameter, 170, 1, 50, 50);
 }
 void loop()
 {
   readSensor();
-  trackline_pid(pid1_parameter, baseSpeed);
-  delayMicroseconds(9);
+  // trackline_pid(pid1_parameter, 170);
 }

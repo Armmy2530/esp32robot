@@ -82,7 +82,7 @@ void calibrate_sensor(int n_check, int cal_speed)
         {
           confirm_black++;
         }
-        Serial.print(String(sensor_val[n]) + " ");
+        Serial.print(String(sensor_val[i]) + " ");
       }
       Serial.println();
       if (confirm_black == 5)
